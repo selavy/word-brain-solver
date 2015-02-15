@@ -50,7 +50,7 @@ Pos = namedtuple('Pos', ['x', 'y'])
 
 def createInitialState(board):
     dim = len(board)
-    return GameState(board=board, currPos=Pos(0, 0), finishedWords=[], visited=[[False for i in range(dim)] for i in range(dim)], currentWord = [])
+    return GameState(board=board, currPos=Pos(0, 0), finishedWords=[], visited=[[False for i in range(dim)] for i in range(dim)], currentWord='')
 
 def createIsFinished(expectedWords):
     def isFinished(state):
@@ -62,6 +62,21 @@ def createIsFinished(expectedWords):
         return len(state.finishedWords) == len(expectedWords)
     return isFinished
 
+def createCheckCurrentWord(dictionary, solutionSizes):
+    def checkCurrentWord(state):
+        if (len(state.currentWord) in solutionSizes) and (state.currentWord in dictionary):
+            return True
+        return False
+    return checkCurrentWord
+
+def createGenerateMoves(checkCurrentWord):
+    def generateMoves(state):
+        if checkCurrentWord(state):
+            state.finishedWords.append(state.currentWord)
+            state.currentWord = ''
+        return []
+    return generateMoves
+
 if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option('--filename', dest='filename', default='input.txt', help='input file')
@@ -71,14 +86,21 @@ if __name__ == '__main__':
     printBoard(board)
     print 'Solution sizes: ', solutionSizes
     print('Dictionary file: %s' % options.dictionary)
+# TODO (plesslie)
+# filter dictionary on solution sizes
     dictionary = loadDictionary(options.dictionary, len(board))
     heap = [HeapItem(priority=1, weight=1, heuristic=0, state=createInitialState(board))]
     isFinished = createIsFinished(solutionSizes)
+    checkCurrentWord = createCheckCurrentWord(dictionary, solutionSizes)
+    generateMoves = createGenerateMoves(checkCurrentWord)
     while heap:
         state = heapq.heappop(heap).state
         print state
         if isFinished(state):
             print('Done words = %s' % str(state.finishedWords))
             sys.exit(0)
+        moves = generateMoves(state)
+        for move in moves:
+            heapq.heappush(move)
     print('Heap is empty. No solution found!')
 
