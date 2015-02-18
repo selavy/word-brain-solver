@@ -28,9 +28,10 @@ def printBoard(board):
 
 def loadDictionary(filename, solutionSizes):
     def validWord(word):
+        word = word.strip().lower()
         if len(word) not in solutionSizes:
             return False
-        return word.strip().lower().isalpha()
+        return word.isalpha()
     return [line.strip().lower() for line in open(filename) if validWord(line)]
 
 GameState = namedtuple('GameState', ['board', 'currPos', 'finishedWords', 'visited', 'currentWord'])
