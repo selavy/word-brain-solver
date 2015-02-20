@@ -2,6 +2,7 @@ from optparse import OptionParser
 import sys
 from collections import namedtuple
 import heapq
+import copy
 
 def readInput(filename):
     print('Opening: %s' % filename)
@@ -53,7 +54,7 @@ def letterFrequencies(word):
         else:
             freq[letter] = 1
     return freq
- 
+
 def getLetterFrequencies(board):
     freq = {}
     for row in board:
@@ -75,6 +76,70 @@ def filterWordOnFrequencies(word, letters):
             continue
     return True
 
+def canMove(x, y, word, board, n):
+    size = len(board)
+    if n >= len(word):
+        return True
+    # print 'Can Move x = ', x, ', y = ', y, 'n = ', n, ' word[n] = ', word[n]
+    # if x+1 < size:
+    #     print 'x+1,y = ', board[x+1][y]
+    # if x-1 > 0:
+    #     print 'x-1,y = ', board[x-1][y]
+    # if y+1 < size:
+    #     print 'x,y+1 = ', board[x][y+1]
+    # if y-1 > 0:
+    #     print 'x,y-1 = ', board[x][y-1]
+    # if x+1 < size and y+1 < size:
+    #     print 'x+1,y+1 = ', board[x+1][y-1]
+    # if x-1 > 0 and y-1 > 0:
+    #     print 'x-1,y-1 = ', board[x-1][y-1]
+    # if x-1 > 0 and y+1 < size:
+    #     print 'x-1,y+1 = ', board[x-1][y+1]
+    # if x+1 < size and y-1 > 0:
+    #     print 'x+1,y-1 = ', board[x+1][y-1]
+
+    if x+1 < size:
+        if board[x+1][y] == word[n]:
+            board[x+1][y] = None
+            return canMove(x+1,y,word,board,n+1)
+        elif y+1 < size and board[x+1][y+1] == word[n]:
+            board[x+1][y+1] = None
+            return canMove(x+1,y+1,word,board,n+1)
+        elif y-1 >= 0 and board[x+1][y-1] == word[n]:
+            board[x+1][y-1] = None
+            return canMove(x+1,y-1,word,board,n+1)
+    if x-1 >= 0:
+        if board[x-1][y] == word[n]:
+            board[x-1][y] = None
+            return canMove(x-1,y,word,board,n+1)
+        elif y+1 < size and board[x-1][y+1] == word[n]:
+            board[x-1][y+1] = None
+            return canMove(x-1,y+1,word,board,n+1)
+        elif y-1 >= 0 and board[x-1][y-1] == word[n]:
+            board[x-1][y-1] = None
+            return canMove(x-1,y-1,word,board,n+1)
+    if y+1 < size and board[x][y+1] == word[n]:
+        board[x][y+1] = None
+        return canMove(x,y+1,word,board,n+1)
+    if y-1 >= 0 and board[x][y-1] == word[n]:
+        board[x][y-1] = None
+        return canMove(x,y-1,word,board,n+1)
+    return False
+
+def checkWord(word, board):
+    x = -1
+    y = -1
+    for i in range(len(board)):
+        for j in range(len(board)):
+            if board[i][j] == word[0]:
+                x = i
+                y = j
+                if canMove(x, y, word, board, 1):
+                    return True
+            # print board[i][j],
+        # print ' '
+    return False
+
 if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option('--filename', dest='filename', default='input.txt', help='input file')
@@ -89,6 +154,10 @@ if __name__ == '__main__':
     dictionary = loadDictionary(options.dictionary, solutionSizes)
     print(len(dictionary))
     dictionary = [x for x in dictionary if filterWordOnFrequencies(x, letterFreq)]
-    print(len(dictionary))
-    print(dictionary)
+    # print(len(dictionary))
+    # print(sorted(dictionary))
+    # print checkWord('table', board)
+    for word in dictionary:
+        if checkWord(word, copy.deepcopy(board)):
+            print word
 
