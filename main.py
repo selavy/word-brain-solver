@@ -100,30 +100,41 @@ def canMove(x, y, word, board, n):
 
     if x+1 < size:
         if board[x+1][y] == word[n]:
-            board[x+1][y] = None
-            return canMove(x+1,y,word,board,n+1)
+            c = copy.deepcopy(board)
+            c[x+1][y] = None
+            if canMove(x+1,y,word,c,n+1):
+                return True
         elif y+1 < size and board[x+1][y+1] == word[n]:
-            board[x+1][y+1] = None
-            return canMove(x+1,y+1,word,board,n+1)
+            c = copy.deepcopy(board)
+            c[x+1][y+1] = None
+            if canMove(x+1,y+1,word,c,n+1):
+                return True
         elif y-1 >= 0 and board[x+1][y-1] == word[n]:
-            board[x+1][y-1] = None
-            return canMove(x+1,y-1,word,board,n+1)
+            c = copy.deepcopy(board)
+            c[x+1][y-1] = None
+            if canMove(x+1,y-1,word,c,n+1):
+                return True
     if x-1 >= 0:
         if board[x-1][y] == word[n]:
-            board[x-1][y] = None
-            return canMove(x-1,y,word,board,n+1)
+            c = copy.deepcopy(board)
+            c[x-1][y] = None
+            return canMove(x-1,y,word,c,n+1)
         elif y+1 < size and board[x-1][y+1] == word[n]:
-            board[x-1][y+1] = None
-            return canMove(x-1,y+1,word,board,n+1)
+            c = copy.deepcopy(board)
+            c[x-1][y+1] = None
+            return canMove(x-1,y+1,word,c,n+1)
         elif y-1 >= 0 and board[x-1][y-1] == word[n]:
-            board[x-1][y-1] = None
-            return canMove(x-1,y-1,word,board,n+1)
+            c = copy.deepcopy(board)
+            c[x-1][y-1] = None
+            return canMove(x-1,y-1,word,c,n+1)
     if y+1 < size and board[x][y+1] == word[n]:
-        board[x][y+1] = None
-        return canMove(x,y+1,word,board,n+1)
+        c = copy.deepcopy(board)
+        c[x][y+1] = None
+        return canMove(x,y+1,word,c,n+1)
     if y-1 >= 0 and board[x][y-1] == word[n]:
-        board[x][y-1] = None
-        return canMove(x,y-1,word,board,n+1)
+        c = copy.deepcopy(board)
+        c[x][y-1] = None
+        return canMove(x,y-1,word,c,n+1)
     return False
 
 def checkWord(word, board):
@@ -156,8 +167,8 @@ if __name__ == '__main__':
     dictionary = [x for x in dictionary if filterWordOnFrequencies(x, letterFreq)]
     # print(len(dictionary))
     # print(sorted(dictionary))
-    # print checkWord('table', board)
-    for word in dictionary:
-        if checkWord(word, copy.deepcopy(board)):
-            print word
+    print checkWord('lantern', board)
+    # for word in dictionary:
+    #     if checkWord(word, copy.deepcopy(board)):
+    #         print word
 
