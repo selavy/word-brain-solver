@@ -24,12 +24,14 @@ public:
     Row const& getRow(int row) const;
     Tile const& getTile(int row, int col) const;
     void setTile(int row, int col, char val);
-    void print(std::ostream& os);
+    void print(std::ostream& os) const;
 
 private:
     std::size_t size_;
     std::vector< Row > board_;
 };
 
+
+std::ostream& operator<<(std::ostream& os, const Board& board);
 
 #endif //WORD_BRAIN_SOLVER_BOARD_H

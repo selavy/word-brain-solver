@@ -32,7 +32,7 @@ void Board::setTile(int row, int col, char val) {
     board_[row][col].setValue(val);
 }
 
-void Board::print(std::ostream &os) {
+void Board::print(std::ostream &os) const {
     std::string rowDelim("");
     rowDelim.push_back('-');
     for (int i=0; i < size_; ++i) {
@@ -48,4 +48,9 @@ void Board::print(std::ostream &os) {
         os << '\n' << rowDelim << '\n';
     }
     );
+}
+
+std::ostream& operator<<(std::ostream& os, const Board& board) {
+    board.print(os);
+    return os;
 }
