@@ -9,7 +9,7 @@
 
 class Dictionary {
 public:
-    Dictionary() {}
+    explicit Dictionary(std::size_t maxSize=0) {}
     virtual ~Dictionary() {}
     virtual bool check(const std::string& word) const=0;
 };

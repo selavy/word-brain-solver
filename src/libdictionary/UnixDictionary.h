@@ -10,7 +10,7 @@
 
 class UnixDictionary : public Dictionary {
 public:
-    UnixDictionary();
+    explicit UnixDictionary(std::size_t maxSize=0);
     virtual ~UnixDictionary();
     virtual bool check(const std::string& word) const;
 private:
