@@ -1,0 +1,2 @@
+add_subdirectory(test_reader)
+add_subdirectory(test_board)

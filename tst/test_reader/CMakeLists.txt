@@ -1,0 +1,2 @@
+add_executable(test_reader test_reader.cpp)
+target_link_libraries(test_reader LINK_PUBLIC libreader)
