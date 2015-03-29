@@ -15,5 +15,10 @@ int main(int argc, char **argv) {
     Board board(4);
     std::cout << "Printing board:" << '\n';
     board.print(std::cout);
+
+    board.setTile(2,3,'A');
+    board.setTile(1,2, 'b');
+    std::cout << "Printing board:" << '\n';
+    board.print(std::cout);
     return 0;
 }
