@@ -4,11 +4,21 @@
 
 #include "UnixDictionary.h"
 #include <fstream>
+#include <sstream>
+#include <Logger.h>
+#include <Timer.h>
 
 UnixDictionary::UnixDictionary(std::size_t maxSize) {
+    Timer timer;
+    timer.start();
+
     std::ifstream in("/usr/share/dict/american-english", std::ios::in);
     if (!in.good()) {
-        throw std::runtime_error("unabled to find dictionary at: /usr/share/dict/american-english");
+            in.close();
+	    in.open("/usr/share/dict/words", std::ios::in);
+	    if (!in.good()) {
+		    throw std::runtime_error("unabled to find dictionary at: /usr/share/dict/american-english");
+	    }
     }
     std::string word;
     while (!in.eof()) {
@@ -22,6 +32,10 @@ UnixDictionary::UnixDictionary(std::size_t maxSize) {
         }
     }
     in.close();
+
+    std::stringstream ss;
+    ss << "Loading dictionary took: " << timer.elapsedNs() << " nanoseconds.";
+    Logger::instance().log(ss.str());
 }
 
 UnixDictionary::~UnixDictionary() { }
