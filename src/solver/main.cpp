@@ -10,6 +10,7 @@
 #include <FileReader.h>
 #include <UnixDictionary.h>
 #include <Logger.h>
+#include <boost/program_options.hpp>
 
 int main(int argc, char **argv) {
     Timer timer;
