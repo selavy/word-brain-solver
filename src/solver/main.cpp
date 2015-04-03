@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <string>
 #include <sstream>
 #include <memory>
 #include <Timer.h>
@@ -44,7 +45,7 @@ int main(int argc, char **argv) {
   }
 
   if (vm.count("board")) {
-    boardFile = vm["dict"].as<std::string>();
+    boardFile = vm["board"].as<std::string>();
     Logger::instance().log("Using board file: ", boardFile);
   }
 

@@ -11,8 +11,6 @@ class Logger {
 public:
     ~Logger();
     static Logger& instance();
-    void log(const std::string& stmt);
-    void log(const std::stringstream& ss);
 
     template <typename First, typename... Rest>
     void log(First param1, Rest...param) {
@@ -21,18 +19,14 @@ public:
     }
 
 private:
+    Logger();
     void log() {
-        //std::time_t t = std::time(NULL);
-        //char mbstr[100];
-        //if (std::strftime(mbstr, sizeof(mbstr), "%Y-%m-%d %H:%M:%S", std::localtime(&t))) {
-        //    std::cout << mbstr << " - " << ss_.str() << std::endl;
-        //} else {
-        //    std::cout << ss_.str() << std::endl;
-        //}
         boost::local_time::local_date_time ldt(boost::local_time::local_microsec_clock::local_time(tz_));
         std::cout << ldt << " - " << ss_.str() << std::endl;
+        ss_.str("");
     }
-    Logger();
+
+private:
     std::stringstream ss_;
     boost::local_time::time_zone_ptr tz_;
     boost::local_time::local_time_facet* output_facet_;

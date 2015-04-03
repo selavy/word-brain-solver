@@ -23,10 +23,3 @@ Logger& Logger::instance() {
 	return logger;
 }
 
-void Logger::log(const std::string& stmt) {
-	std::cout << stmt << std::endl;
-}
-
-void Logger::log(const std::stringstream& ss) {
-	log(ss.str());
-}
