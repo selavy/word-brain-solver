@@ -14,8 +14,8 @@ Logger::Logger() : ss_(), tz_(new boost::local_time::posix_time_zone("CST-05")),
 }
 
 Logger::~Logger() {
-	delete output_facet_;
 	delete input_facet_;
+	delete output_facet_;
 }
 
 Logger& Logger::instance() {
