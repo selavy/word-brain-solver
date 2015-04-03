@@ -1,7 +1,7 @@
 
 # Create a library called "Hello" which includes the source file "hello.cxx".
 # The extension is already found. Any number of sources could be listed here.
-add_library (libreader Reader.cpp Reader.h FileReader.cpp FileReader.h)
+add_library (libreader Reader.h FileReader.cpp FileReader.h)
 
 # Make sure the compiler can find include files for our Hello library
 # when other libraries or executables link to Hello
