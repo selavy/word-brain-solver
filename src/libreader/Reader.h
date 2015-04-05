@@ -12,6 +12,7 @@ public:
     Reader() {}
     virtual ~Reader() {}
     virtual Board getBoard()=0;
+    virtual std::vector<int> getWordLengths()=0;
 };
 
 #endif //WORD_BRAIN_SOLVER_READER_H

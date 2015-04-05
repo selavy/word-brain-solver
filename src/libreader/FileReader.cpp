@@ -5,12 +5,13 @@
 #include <stdexcept>
 #include "FileReader.h"
 
-FileReader::FileReader(const std::string &filename) : in_(filename.c_str(), std::ios::in) {
+FileReader::FileReader(const std::string &filename) : in_(filename.c_str(), std::ios::in), board_(), wordLengths_()  {
     if (!in_.good()) {
         std::string err("unabled to open file: ");
         err += filename;
         throw std::runtime_error(err.c_str());
     }
+    parse();
 }
 
 FileReader::~FileReader() {
@@ -19,8 +20,7 @@ FileReader::~FileReader() {
     }
 }
 
-Board FileReader::getBoard() {
-    int counter = 0;
+void FileReader::parse() {
     int c;
     std::vector< char > row;
     while (!in_.eof()) {
@@ -39,9 +39,9 @@ Board FileReader::getBoard() {
         err += static_cast<char>(size+'0');
         throw std::runtime_error(err.c_str());
     }
-    Board board(size);
+    board_.reset(new Board(size));
     for (int i = 0; i < size; ++i) {
-        board.setTile(0, i, row[i]);
+        board_->setTile(0, i, row[i]);
     }
 
     for (int i = 1; i < size; ++i) {
@@ -55,10 +55,10 @@ Board FileReader::getBoard() {
                 err += static_cast<char>(c);
                 throw std::runtime_error(err.c_str());
             }
-            board.setTile(i, col, static_cast<char>(c));
+            board_->setTile(i, col, static_cast<char>(c));
             // swallow next character, which should either be a newline or space
             in_.get();
         }
     }
-    return board;
 }
+

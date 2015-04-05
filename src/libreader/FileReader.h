@@ -12,10 +12,16 @@ class FileReader : public Reader {
 public:
     explicit FileReader(const std::string& filename);
     virtual ~FileReader();
-    virtual Board getBoard();
+    virtual Board getBoard() { return board_ ? *board_ : Board(); }
+    virtual std::vector<int> getWordLengths() { return wordLengths_; }
 
-private:
+private: // methods
+    void parse();
+
+private: // members
     std::ifstream in_;
+    std::unique_ptr<Board> board_;
+    std::vector<int> wordLengths_;
 };
 
 
