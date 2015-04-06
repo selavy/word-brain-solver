@@ -13,7 +13,6 @@ public:
     explicit FileReader(const std::string& filename);
     virtual ~FileReader();
     virtual std::shared_ptr<Board> getBoard() { return board_; }
-    virtual std::vector<int> getWordLengths() { return wordLengths_; }
 
 private: // methods
     void parse();
@@ -21,7 +20,6 @@ private: // methods
 private: // members
     std::ifstream in_;
     std::shared_ptr<Board> board_;
-    std::vector<int> wordLengths_;
 };
 
 

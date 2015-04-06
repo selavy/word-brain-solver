@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include "FileReader.h"
 
-FileReader::FileReader(const std::string &filename) : in_(filename.c_str(), std::ios::in), board_(), wordLengths_()  {
+FileReader::FileReader(const std::string &filename) : in_(filename.c_str(), std::ios::in), board_() {
     if (!in_.good()) {
         std::string err("unabled to open file: ");
         err += filename;
@@ -63,8 +63,12 @@ void FileReader::parse() {
 
     while (!in_.eof() && (c = in_.get()) != '\n') {
         if (c >= '0' && c <= '9') {
-            wordLengths_.push_back(static_cast<char>(c - '0'));
+            board_->addWordLength(c - '0');
         }
+    }
+
+    if (board_->getWordLengths().empty()) {
+        throw std::runtime_error("malformed input file: no word lengths given");
     }
 }
 

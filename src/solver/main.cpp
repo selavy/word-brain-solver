@@ -6,12 +6,14 @@
 #include <string>
 #include <sstream>
 #include <memory>
+#include <algorithm>
+#include <boost/program_options.hpp>
 #include <Timer.h>
 #include <Board.h>
 #include <FileReader.h>
 #include <UnixDictionary.h>
 #include <Logger.h>
-#include <boost/program_options.hpp>
+#include <Solver.h>
 
 template <typename T>
 void logVector(const std::vector<T>& vec) {
@@ -58,18 +60,18 @@ int main(int argc, char **argv) {
 
     Timer timer;
     timer.start();
-    std::vector<int> wordLengths;
     std::shared_ptr<Board> board;
     {
         std::unique_ptr<Reader> reader = std::unique_ptr<Reader>(new FileReader(boardFile.c_str()));
-        wordLengths = reader->getWordLengths();
         board = reader->getBoard();
     }
-    std::unique_ptr<Dictionary> dictionary = std::unique_ptr<Dictionary>(new UnixDictionary());
+    Logger::instance().log("Max word length: ", board->getMaxWordLength());
+    std::unique_ptr<Dictionary> dictionary = std::unique_ptr<Dictionary>(new UnixDictionary(board->getMaxWordLength()));
     Logger::instance().log("Loaded modules in: ", timer.elapsedNs(), " nanoseconds.\n");
     Logger::instance().log("Board: \n", *board);
     Logger::instance().log("Word lengths...");
-    logVector(wordLengths);
+    logVector(board->getWordLengths());
+    Solver solver(board, std::move(dictionary));
     return 0;
 }
 

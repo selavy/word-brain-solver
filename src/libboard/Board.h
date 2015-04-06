@@ -9,6 +9,7 @@
 #include <stddef.h>
 #include <ostream>
 #include <vector>
+#include <algorithm>
 #include "Tile.h"
 
 class Board {
@@ -25,10 +26,14 @@ public:
     Tile const& getTile(int row, int col) const;
     void setTile(int row, int col, char val);
     void print(std::ostream& os) const;
+    const std::vector<int>& getWordLengths() { return wordLengths_; }
+    int getMaxWordLength() const { return *(std::max_element(wordLengths_.begin(), wordLengths_.end())); }
+    void addWordLength(int l) { wordLengths_.push_back(l); }
 
 private:
     std::size_t size_;
-    std::vector< Row > board_;
+    std::vector<Row> board_;
+    std::vector<int> wordLengths_;
 };
 
 
