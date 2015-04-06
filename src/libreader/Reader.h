@@ -6,12 +6,13 @@
 #define WORD_BRAIN_SOLVER_READER_H
 
 #include "Board.h"
+#include <memory>
 
 class Reader {
 public:
     Reader() {}
     virtual ~Reader() {}
-    virtual Board getBoard()=0;
+    virtual std::shared_ptr<Board> getBoard()=0;
     virtual std::vector<int> getWordLengths()=0;
 };
 

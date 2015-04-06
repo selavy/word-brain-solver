@@ -12,7 +12,7 @@ class FileReader : public Reader {
 public:
     explicit FileReader(const std::string& filename);
     virtual ~FileReader();
-    virtual Board getBoard() { return board_ ? *board_ : Board(); }
+    virtual std::shared_ptr<Board> getBoard() { return board_; }
     virtual std::vector<int> getWordLengths() { return wordLengths_; }
 
 private: // methods
@@ -20,7 +20,7 @@ private: // methods
 
 private: // members
     std::ifstream in_;
-    std::unique_ptr<Board> board_;
+    std::shared_ptr<Board> board_;
     std::vector<int> wordLengths_;
 };
 

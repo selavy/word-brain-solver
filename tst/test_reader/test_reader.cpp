@@ -8,7 +8,7 @@
 
 int main(int argc, char **argv) {
     std::unique_ptr<Reader> reader(new FileReader("test.board"));
-    Board board = reader->getBoard();
-    std::cout << board << std::endl;
+    std::shared_ptr<Board> board = reader->getBoard();
+    std::cout << *board << std::endl;
     return 0;
 }

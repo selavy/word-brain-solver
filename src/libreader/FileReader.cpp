@@ -60,5 +60,11 @@ void FileReader::parse() {
             in_.get();
         }
     }
+
+    while (!in_.eof() && (c = in_.get()) != '\n') {
+        if (c >= '0' && c <= '9') {
+            wordLengths_.push_back(static_cast<char>(c - '0'));
+        }
+    }
 }
 

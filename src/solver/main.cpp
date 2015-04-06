@@ -13,6 +13,13 @@
 #include <Logger.h>
 #include <boost/program_options.hpp>
 
+template <typename T>
+void logVector(const std::vector<T>& vec) {
+    for (const auto& it : vec) {
+        Logger::instance().log(it, '\n');
+    }
+}
+
 int main(int argc, char **argv) {
     boost::program_options::options_description desc("Options");
     desc.add_options()
@@ -51,11 +58,18 @@ int main(int argc, char **argv) {
 
     Timer timer;
     timer.start();
-    std::unique_ptr<Reader> reader = std::unique_ptr<Reader>(new FileReader(boardFile.c_str()));
+    std::vector<int> wordLengths;
+    std::shared_ptr<Board> board;
+    {
+        std::unique_ptr<Reader> reader = std::unique_ptr<Reader>(new FileReader(boardFile.c_str()));
+        wordLengths = reader->getWordLengths();
+        board = reader->getBoard();
+    }
     std::unique_ptr<Dictionary> dictionary = std::unique_ptr<Dictionary>(new UnixDictionary());
-
     Logger::instance().log("Loaded modules in: ", timer.elapsedNs(), " nanoseconds.\n");
-
+    Logger::instance().log("Board: \n", *board);
+    Logger::instance().log("Word lengths...");
+    logVector(wordLengths);
     return 0;
 }
 
