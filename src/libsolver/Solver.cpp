@@ -5,9 +5,9 @@
 #include "Solver.h"
 
 Solver::Solver(
-        std::shared_ptr<Board> board,
+        std::unique_ptr<Board> board,
         std::unique_ptr<Dictionary> dictionary)
-        : board_(board),
+        : board_(std::move(board)),
           dictionary_(std::move(dictionary)) { }
 
 

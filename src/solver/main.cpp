@@ -60,18 +60,16 @@ int main(int argc, char **argv) {
 
     Timer timer;
     timer.start();
-    std::shared_ptr<Board> board;
-    {
-        std::unique_ptr<Reader> reader = std::unique_ptr<Reader>(new FileReader(boardFile.c_str()));
-        board = reader->getBoard();
-    }
+    std::unique_ptr<Reader> reader = std::unique_ptr<Reader>(new FileReader(boardFile.c_str()));
+    std::unique_ptr<Board> board(reader->getBoard());
+    reader.reset();
     Logger::instance().log("Max word length: ", board->getMaxWordLength());
     std::unique_ptr<Dictionary> dictionary = std::unique_ptr<Dictionary>(new UnixDictionary(board->getMaxWordLength()));
     Logger::instance().log("Loaded modules in: ", timer.elapsedNs(), " nanoseconds.\n");
     Logger::instance().log("Board: \n", *board);
     Logger::instance().log("Word lengths...");
     logVector(board->getWordLengths());
-    Solver solver(board, std::move(dictionary));
+    Solver solver(std::move(board), std::move(dictionary));
     return 0;
 }
 

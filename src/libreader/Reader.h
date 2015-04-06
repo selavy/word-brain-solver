@@ -12,7 +12,7 @@ class Reader {
 public:
     Reader() {}
     virtual ~Reader() {}
-    virtual std::shared_ptr<Board> getBoard()=0;
+    virtual std::unique_ptr<Board> getBoard()=0;
 };
 
 #endif //WORD_BRAIN_SOLVER_READER_H

@@ -11,11 +11,11 @@
 
 class Solver {
 public:
-    Solver(std::shared_ptr<Board> board, std::unique_ptr<Dictionary> dictionary);
+    Solver(std::unique_ptr<Board> board, std::unique_ptr<Dictionary> dictionary);
     ~Solver() {}
 
 private:
-    std::shared_ptr<Board> board_;
+    std::unique_ptr<Board> board_;
     std::unique_ptr<Dictionary> dictionary_;
 };
 

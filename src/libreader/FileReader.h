@@ -12,14 +12,14 @@ class FileReader : public Reader {
 public:
     explicit FileReader(const std::string& filename);
     virtual ~FileReader();
-    virtual std::shared_ptr<Board> getBoard() { return board_; }
+    virtual std::unique_ptr<Board> getBoard() { return std::move(board_); }
 
 private: // methods
     void parse();
 
 private: // members
     std::ifstream in_;
-    std::shared_ptr<Board> board_;
+    std::unique_ptr<Board> board_;
 };
 
 
