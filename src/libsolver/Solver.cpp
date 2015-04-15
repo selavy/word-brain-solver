@@ -17,7 +17,7 @@ void Solver::solve() {
     printQueue();
 
     int safetyCounter = 0;
-    int MAX_LOOPS = 500;
+    int MAX_LOOPS = 50000;
     std::vector<std::string> finalWordsFound;
 
     while (!queue_.empty() && safetyCounter < MAX_LOOPS) {
@@ -107,6 +107,8 @@ void Solver::solve() {
 
     if (queue_.empty()) {
         Logger::instance().log("Unable to find solution!");
+    } else if (safetyCounter > MAX_LOOPS) {
+        Logger::instance().log("Not enough iterations");
     } else {
         Logger::instance().log("FINISHED");
         Logger::instance().log("words: ");
