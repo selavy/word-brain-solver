@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
 
     int maxWordLength = *(std::max_element(wordLengths.begin(), wordLengths.end()));
     Logger::instance().log("Max word length: ", maxWordLength);
-    std::unique_ptr<Dictionary> dictionary = std::unique_ptr<Dictionary>(new UnixDictionary(maxWordLength));
+    DictionaryPtr dictionary(new UnixDictionary(wordLengths));
     Logger::instance().log("Loaded modules in: ", timer.elapsedNs(), " nanoseconds.\n");
     Logger::instance().log("Board: \n", *board);
     Logger::instance().log("Word lengths...");

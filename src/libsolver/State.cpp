@@ -4,9 +4,10 @@
 
 #include "State.h"
 
-State::State(const std::unique_ptr<Board>& board, const std::vector<std::string>& wordsCompleted, int curX, int curY)
+State::State(const std::unique_ptr<Board>& board, const std::vector<std::string>& wordsCompleted, const std::string& currentWord, int curX, int curY)
         : board_(new Board(*board))
         , wordsCompleted_(wordsCompleted)
+        , currentWord_(currentWord)
         , x_(curX)
         , y_(curY)
 {}
@@ -28,6 +29,8 @@ void State::print(std::ostream &os) const {
         }
         os << '\n';
         os << "x = " << x_ << ", y = " << y_ << '\n';
+        os << "Current Word: " << currentWord_ << '\n';
+        os << "==== \\STATE\\ ====";
         os << std::endl;
 }
 
@@ -35,3 +38,5 @@ std::ostream& operator<<(std::ostream& os, const State& state) {
         state.print(os);
         return os;
 }
+
+const std::string &State::getCurrentWord() const { return currentWord_; }

@@ -15,6 +15,10 @@ bool Tile::isEmpty() const {
     return val_ == EMPTY;
 }
 
+bool Tile::isUsed() const {
+    return val_ == USED;
+}
+
 void Tile::print(std::ostream &os) {
     os << (isEmpty() ? ' ' : val_);
 }
@@ -36,4 +40,12 @@ void Tile::setValue(char val) {
     } else {
         val_ = EMPTY;
     }
+}
+
+void Tile::setEmpty() {
+    val_ = EMPTY;
+}
+
+void Tile::setUsed() {
+    val_ = USED;
 }

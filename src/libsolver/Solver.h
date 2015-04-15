@@ -7,23 +7,31 @@
 
 #include <memory>
 #include <queue>
+#include <list>
 #include "Dictionary.h"
 #include "Board.h"
 #include "State.h"
 
 class Solver {
 public:
-    Solver(const std::unique_ptr<Board>& board, const std::unique_ptr<Dictionary>& dictionary, const std::vector<int>& wordLengths);
+    Solver(const BoardPtr& board, const DictionaryPtr& dictionary, const std::vector<int>& wordLengths);
 
     ~Solver() {}
 
     void solve();
 
-private:
-    const std::unique_ptr<Board>& board_;
-    const std::unique_ptr<Dictionary>& dictionary_;
+private: // types
+    typedef std::unique_ptr<State> StatePtr;
+
+private: // members
+    const BoardPtr& board_;
+    const DictionaryPtr& dictionary_;
     const std::vector<int>& wordLengths_;
-    std::vector<std::unique_ptr<State>> queue_;
+    std::list<StatePtr> queue_;
+
+private: // methods
+    void initializeQueue();
+    void printQueue();
 };
 
 

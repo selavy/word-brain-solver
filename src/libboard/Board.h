@@ -10,6 +10,7 @@
 #include <ostream>
 #include <vector>
 #include <algorithm>
+#include <memory>
 #include "Tile.h"
 
 class Board {
@@ -17,6 +18,7 @@ public:
     typedef std::vector<Tile> Row;
     typedef Row Column;
     static const char EMPTY = 0;
+    static const char USED = -1;
 
 public:
     Board();
@@ -37,6 +39,8 @@ public:
 
     void useTile(int row, int col);
 
+    void setTileToEmpty(int row, int col);
+
     void print(std::ostream& os) const;
 
     int dim() const;
@@ -44,8 +48,12 @@ public:
 private:
     std::size_t size_;
     std::vector<Row> board_;
+
+private: // methods
+    Tile& getTile(int row, int col);
 };
 
+typedef std::unique_ptr<Board> BoardPtr;
 
 std::ostream& operator<<(std::ostream& os, const Board& board);
 

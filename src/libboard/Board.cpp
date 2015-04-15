@@ -56,7 +56,11 @@ std::ostream& operator<<(std::ostream& os, const Board& board) {
 }
 
 void Board::useTile(int row, int col) {
-    setTile(row, col, EMPTY);
+    getTile(row, col).setUsed();
+}
+
+void Board::setTileToEmpty(int row, int col) {
+    getTile(row, col).setEmpty();
 }
 
 Board::Board(Board &&board)
@@ -70,3 +74,7 @@ Board::Board(const Board &board)
 { }
 
 int Board::dim() const { return static_cast<int>(board_.size()); }
+
+Tile &Board::getTile(int row, int col) {
+    return board_[row][col];
+}

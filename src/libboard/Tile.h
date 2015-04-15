@@ -11,16 +11,28 @@
 class Tile {
 public:
     Tile();
+
     explicit Tile(char val);
+
     ~Tile() { }
 
     bool isEmpty() const;
+
+    bool isUsed() const;
+
     void print(std::ostream& os);
+
     char getValue() const;
+
     void setValue(char val);
+
+    void setEmpty();
+
+    void setUsed();
 
 private:
     static const char EMPTY = ' ';
+    static const char USED = '_';
     char val_;
 };
 
