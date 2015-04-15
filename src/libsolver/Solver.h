@@ -32,6 +32,8 @@ private: // members
 private: // methods
     void initializeQueue();
     void printQueue();
+    void simplifyBoard(BoardPtr& board);
+    std::vector<std::pair<int, int> > generateMoves(int currX, int currY, int dim);
 };
 
 

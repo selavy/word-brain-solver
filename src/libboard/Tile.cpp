@@ -19,6 +19,10 @@ bool Tile::isUsed() const {
     return val_ == USED;
 }
 
+bool Tile::isActive() const {
+    return !(isEmpty() || isUsed());
+}
+
 void Tile::print(std::ostream &os) {
     os << (isEmpty() ? ' ' : val_);
 }

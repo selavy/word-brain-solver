@@ -20,6 +20,8 @@ public:
 
     bool isUsed() const;
 
+    bool isActive() const;
+
     void print(std::ostream& os);
 
     char getValue() const;

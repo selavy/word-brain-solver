@@ -30,6 +30,7 @@ void State::print(std::ostream &os) const {
         os << '\n';
         os << "x = " << x_ << ", y = " << y_ << '\n';
         os << "Current Word: " << currentWord_ << '\n';
+        os << "Current Square: " << const_cast<const Board &>(*board_).getTile(x_, y_) << '\n';
         os << "==== \\STATE\\ ====";
         os << std::endl;
 }

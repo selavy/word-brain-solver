@@ -38,12 +38,19 @@ int main(int argc, char **argv) {
     int maxWordLength = *(std::max_element(wordLengths.begin(), wordLengths.end()));
     Logger::instance().log("Max word length: ", maxWordLength);
     DictionaryPtr dictionary(new UnixDictionary(wordLengths));
-    Logger::instance().log("Loaded modules in: ", timer.elapsedNs(), " nanoseconds.\n");
+    Logger::instance().log("Loaded modules in: ", timer.elapsedNs(), " nanoseconds.");
     Logger::instance().log("Board: \n", *board);
     Logger::instance().log("Word lengths...");
     logVector(wordLengths);
     Solver solver(board, dictionary, wordLengths);
-    solver.solve();
+
+    timer.start();
+    try {
+        solver.solve();
+    } catch (std::runtime_error& ex) {
+        Logger::instance().log(ex.what());
+    }
+    Logger::instance().log("solve() took: ", timer.elapsedNs(), " nanoseconds.");
     return 0;
 }
 
