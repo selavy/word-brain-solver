@@ -3,6 +3,7 @@
 //
 
 #include "Opt.h"
+#include "Logger.h"
 #include <boost/program_options.hpp>
 #include <cstdlib>
 
@@ -20,13 +21,13 @@ Opt::Opt(int argc, char **argv)
         try {
                 boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
                 if (vm.count("help")) {
-                        std::cout << desc << '\n';
+                        Logger::instance().log(desc, '\n');
                         std::exit(1);
                 }
                 boost::program_options::notify(vm);
         } catch (boost::program_options::error &ex) {
-                std::cerr << "ERROR: " << ex.what() << '\n';
-                std::cerr << desc << '\n';
+                Logger::instance().log("ERROR: ", ex.what(), '\n');
+                Logger::instance().log(desc, '\n');
                 std::exit(1);
         }
 

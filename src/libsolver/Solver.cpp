@@ -4,6 +4,7 @@
 
 #include "Solver.h"
 #include "Logger.h"
+#include <cstddef>
 
 Solver::Solver(const BoardPtr& board, const DictionaryPtr& dictionary, const std::vector<int>& wordLengths)
         : board_(board), dictionary_(dictionary), wordLengths_(wordLengths), queue_()
@@ -14,18 +15,20 @@ void Solver::solve() {
     Logger::instance().log("[Solver::solve] begin");
 
     initializeQueue();
-    printQueue();
+//    printQueue();
 
-    int safetyCounter = 0;
-    int MAX_LOOPS = 50000;
+    int64_t safetyCounter = 0;
+    int64_t MAX_LOOPS = 5000000000LL;
     std::vector<std::string> finalWordsFound;
 
+    // TODO (plesslie); if we make the queue multithreaded safe
+    // we can process states in different threads
     while (!queue_.empty() && safetyCounter < MAX_LOOPS) {
-        Logger::instance().log("----- BEGIN ONE ITERATION -----");
+//        Logger::instance().log("----- BEGIN ONE ITERATION -----");
         const StatePtr& state = queue_.front();
-        Logger::instance().log("### POPPED STATE ###");
-        Logger::instance().log(*state);
-        Logger::instance().log("### END POPPED STATE ###");
+//        Logger::instance().log("### POPPED STATE ###");
+//        Logger::instance().log(*state);
+//        Logger::instance().log("### END POPPED STATE ###");
 
         std::string word = state->getCurrentWord();
         const BoardPtr& board = state->getBoard();
@@ -36,7 +39,7 @@ void Solver::solve() {
         const Tile& tile = const_cast<const Board&>(*board).getTile(currX, currY);
 
         word += ::tolower(tile.getValue());
-        Logger::instance().log("Checking word: ", word);
+//        Logger::instance().log("Checking word: ", word);
         bool foundWord = dictionary_->check(word);
         if (foundWord) {
             int counter = 0;
@@ -46,40 +49,40 @@ void Solver::solve() {
                 }
             }
             if (counter <= 1) {
-                Logger::instance().log("Finished state: ", *state);
+//                Logger::instance().log("Finished state:\n", *state);
                 finalWordsFound = wordsCompleted;
                 finalWordsFound.push_back(word);
                 break;
             }
-            Logger::instance().log("Found word: ", word);
+//            Logger::instance().log("Found word: ", word);
         }
 
 
         std::vector<std::pair<int, int> > nextMoves(std::move(generateMoves(currX, currY, dim)));
 
-        {
-            Logger::instance().log("...generated moves...");
-            for (auto &it: nextMoves) {
-                Logger::instance().log("(", it.first, ",", it.second, ")");
-            }
-            Logger::instance().log("...end generated moves...");
-        }
+//        {
+//            Logger::instance().log("...generated moves...");
+//            for (auto &it: nextMoves) {
+//                Logger::instance().log("(", it.first, ",", it.second, ")");
+//            }
+//            Logger::instance().log("...end generated moves...");
+//        }
 
         BoardPtr newBoard = BoardPtr(new Board(*board));
         newBoard->useTile(currX, currY);
         simplifyBoard(newBoard);
 
-        Logger::instance().log("After simplify:\n", *newBoard);
+//        Logger::instance().log("After simplify:\n", *newBoard);
 
         for (auto& move : nextMoves) {
             if (const_cast<const Board&>(*newBoard).getTile(move.first, move.second).isActive()) {
                 StatePtr newState(new State(newBoard, wordsCompleted, word, move.first, move.second));
-                Logger::instance().log("Adding state:\n", *newState);
+//                Logger::instance().log("Adding state:\n", *newState);
 
                 queue_.push_back(std::move(newState));
-            } else {
-                Logger::instance().log("Skipping square (", move.first, ",", move.second, ")");
-            }
+            } //else {
+//                Logger::instance().log("Skipping square (", move.first, ",", move.second, ")");
+//            }
         }
 
         if (foundWord) {
@@ -102,7 +105,7 @@ void Solver::solve() {
 
         queue_.pop_front();
         ++safetyCounter;
-        Logger::instance().log("----- END ITERATION(", safetyCounter, ") -----");
+//        Logger::instance().log("----- END ITERATION(", safetyCounter, ") -----");
     }
 
     if (queue_.empty()) {
@@ -158,11 +161,11 @@ void Solver::initializeQueue() {
 }
 
 void Solver::printQueue() {
-    std::cout << "=== QUEUE ===" << "\n\n";
+    Logger::instance().log("=== QUEUE ===\n\n");
     for (auto& it : queue_) {
-        std::cout << *it << std::endl;
+        Logger::instance().log(*it);
     }
-    std::cout << "=== \\QUEUE\\ ===" << "\n\n";
+    Logger::instance().log("=== \\QUEUE\\ ===\n\n");
 }
 
 std::vector<std::pair<int, int> > Solver::generateMoves(int currX, int currY, int dim) {
