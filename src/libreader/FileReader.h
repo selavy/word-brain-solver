@@ -13,6 +13,7 @@ public:
     explicit FileReader(const std::string& filename);
     virtual ~FileReader();
     virtual std::unique_ptr<Board> getBoard() { return std::move(board_); }
+    virtual const std::vector<int>& getWordLengths() { return wordLengths_; };
 
 private: // methods
     void parse();
@@ -20,6 +21,7 @@ private: // methods
 private: // members
     std::ifstream in_;
     std::unique_ptr<Board> board_;
+    std::vector<int> wordLengths_;
 };
 
 

@@ -62,14 +62,17 @@ int main(int argc, char **argv) {
     timer.start();
     std::unique_ptr<Reader> reader = std::unique_ptr<Reader>(new FileReader(boardFile.c_str()));
     std::unique_ptr<Board> board(reader->getBoard());
+    std::vector<int> wordLengths = reader->getWordLengths();
     reader.reset();
-    Logger::instance().log("Max word length: ", board->getMaxWordLength());
-    std::unique_ptr<Dictionary> dictionary = std::unique_ptr<Dictionary>(new UnixDictionary(board->getMaxWordLength()));
+
+    int maxWordLength = *(std::max_element(wordLengths.begin(), wordLengths.end()));
+    Logger::instance().log("Max word length: ", maxWordLength);
+    std::unique_ptr<Dictionary> dictionary = std::unique_ptr<Dictionary>(new UnixDictionary(maxWordLength));
     Logger::instance().log("Loaded modules in: ", timer.elapsedNs(), " nanoseconds.\n");
     Logger::instance().log("Board: \n", *board);
     Logger::instance().log("Word lengths...");
-    logVector(board->getWordLengths());
-    Solver solver(std::move(board), std::move(dictionary));
+    logVector(wordLengths);
+    Solver solver(std::move(board), std::move(dictionary), std::move(wordLengths));
     return 0;
 }
 

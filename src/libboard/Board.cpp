@@ -54,3 +54,19 @@ std::ostream& operator<<(std::ostream& os, const Board& board) {
     board.print(os);
     return os;
 }
+
+void Board::useTile(int row, int col) {
+    setTile(row, col, EMPTY);
+}
+
+Board::Board(Board &&board)
+        : size_(board.size_)
+        , board_(std::move(board_))
+        , wordLengths_(std::move(board.wordLengths_))
+{ }
+
+Board::Board(const Board &board)
+    : size_(board.size_)
+    , board_(board.board_)
+    , wordLengths_(board.wordLengths_)
+{ }
