@@ -20,25 +20,30 @@ public:
 
 public:
     Board();
+
     explicit Board(std::size_t size);
+
     ~Board();
 
     Board(const Board& board);
+
     Board(Board&& board);
 
     Row const& getRow(int row) const;
+
     Tile const& getTile(int row, int col) const;
+
     void setTile(int row, int col, char val);
+
     void useTile(int row, int col);
+
     void print(std::ostream& os) const;
-    const std::vector<int>& getWordLengths() { return wordLengths_; }
-    int getMaxWordLength() const { return *(std::max_element(wordLengths_.begin(), wordLengths_.end())); }
-    void addWordLength(int l) { wordLengths_.push_back(l); }
+
+    int dim() const;
 
 private:
     std::size_t size_;
     std::vector<Row> board_;
-    std::vector<int> wordLengths_;
 };
 
 

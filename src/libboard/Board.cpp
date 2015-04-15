@@ -62,11 +62,11 @@ void Board::useTile(int row, int col) {
 Board::Board(Board &&board)
         : size_(board.size_)
         , board_(std::move(board_))
-        , wordLengths_(std::move(board.wordLengths_))
 { }
 
 Board::Board(const Board &board)
     : size_(board.size_)
     , board_(board.board_)
-    , wordLengths_(board.wordLengths_)
 { }
+
+int Board::dim() const { return static_cast<int>(board_.size()); }

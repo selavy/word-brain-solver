@@ -42,7 +42,8 @@ int main(int argc, char **argv) {
     Logger::instance().log("Board: \n", *board);
     Logger::instance().log("Word lengths...");
     logVector(wordLengths);
-    Solver solver(std::move(board), std::move(dictionary), std::move(wordLengths));
+    Solver solver(board, dictionary, wordLengths);
+    solver.solve();
     return 0;
 }
 
