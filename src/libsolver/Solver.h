@@ -34,6 +34,7 @@ private: // methods
     void printQueue();
     void simplifyBoard(BoardPtr& board);
     std::vector<std::pair<int, int> > generateMoves(int currX, int currY, int dim);
+    std::vector<std::pair<int, int> > generateStartingMoves(int dim);
 };
 
 

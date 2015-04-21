@@ -41,7 +41,7 @@ void FileReader::parse() {
     }
     board_.reset(new Board(size));
     for (int i = 0; i < size; ++i) {
-        board_->setTile(0, i, row[i]);
+        board_->setTile(i, 0, row[i]);
     }
 
     for (int i = 1; i < size; ++i) {
@@ -55,7 +55,7 @@ void FileReader::parse() {
                 err += static_cast<char>(c);
                 throw std::runtime_error(err.c_str());
             }
-            board_->setTile(i, col, static_cast<char>(c));
+            board_->setTile(col, i, static_cast<char>(c));
             // swallow next character, which should either be a newline or space
             in_.get();
         }

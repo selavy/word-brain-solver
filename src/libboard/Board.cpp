@@ -17,19 +17,14 @@ Board::Board(std::size_t size) : size_(size), board_() {
 
 Board::~Board() { }
 
-Board::Row const & Board::getRow(int row) const {
-    assert(row < size_ && row >= 0);
-    return board_[row];
-}
-
 Tile const & Board::getTile(int row, int col) const {
     assert(row < size_ && row >= 0);
     assert(col < size_ && col >= 0);
-    return board_[row][col];
+    return board_[col][row];
 }
 
 void Board::setTile(int row, int col, char val) {
-    board_[row][col].setValue(val);
+    board_[col][row].setValue(val);
 }
 
 void Board::print(std::ostream &os) const {
@@ -76,5 +71,5 @@ Board::Board(const Board &board)
 int Board::dim() const { return static_cast<int>(board_.size()); }
 
 Tile &Board::getTile(int row, int col) {
-    return board_[row][col];
+    return board_[col][row];
 }

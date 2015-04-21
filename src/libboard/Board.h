@@ -31,8 +31,6 @@ public:
 
     Board(Board&& board);
 
-    Row const& getRow(int row) const;
-
     Tile const& getTile(int row, int col) const;
 
     void setTile(int row, int col, char val);
