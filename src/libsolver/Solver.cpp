@@ -100,19 +100,21 @@ void Solver::solve() {
         Logger::instance().log("After simplify:\n", *newBoard);
         #endif
 
-        for (auto& move : nextMoves) {
-            if (const_cast<const Board&>(*newBoard).getTile(move.first, move.second).isActive()) {
-                StatePtr newState(new State(newBoard, wordsCompleted, word, move.first, move.second));
+        if (dictionary_->isPrefix(word)) {
+            for (auto &move : nextMoves) {
+                if (const_cast<const Board &>(*newBoard).getTile(move.first, move.second).isActive()) {
+                    StatePtr newState(new State(newBoard, wordsCompleted, word, move.first, move.second));
                 #ifdef EXTRA_LOGGING
                 Logger::instance().log("Adding state:\n", *newState);
                 #endif
-                queue_.push_back(std::move(newState));
-            }
-           #ifdef EXTRA_LOGGING
+                    queue_.push_back(std::move(newState));
+                }
+            #ifdef EXTRA_LOGGING
             else {
                 Logger::instance().log("Skipping square (", move.first, ",", move.second, ")");
             }
             #endif
+            }
         }
 
         if (foundWord) {
@@ -133,13 +135,15 @@ void Solver::solve() {
 
             std::vector<std::pair<int, int> > startingMoves(std::move(generateStartingMoves(dim)));
             std::string newWord;
-            for (auto& move : startingMoves) {
-                if (const_cast<const Board&>(*newBoard).getTile(move.first, move.second).isActive()) {
-                    StatePtr newState(new State(newBoard, wordsCompletedWithNew, newWord, move.first, move.second));
+            if (dictionary_->isPrefix(newWord)) {
+                for (auto &move : startingMoves) {
+                    if (const_cast<const Board &>(*newBoard).getTile(move.first, move.second).isActive()) {
+                        StatePtr newState(new State(newBoard, wordsCompletedWithNew, newWord, move.first, move.second));
                     #ifdef EXTRA_LOGGING
                     Logger::instance().log("Adding state:\n", *newState);
                     #endif
-                    queue_.push_back(std::move(newState));
+                        queue_.push_back(std::move(newState));
+                    }
                 }
             }
         }

@@ -63,6 +63,6 @@ void TrieUnixDictionary::load(T verify) {
 }
 
 bool TrieUnixDictionary::isPrefix(const std::string &word) const {
-    return trie_.find(word.c_str()) != trie_.end();
+    return trie_.startsWith(word.c_str()) != trie_.end();
 }
 
