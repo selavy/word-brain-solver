@@ -19,6 +19,8 @@ public:
 
     virtual bool check(const std::string& word) const;
 
+    virtual bool isPrefix(const std::string& word) const;
+
 private:
     std::unordered_set<std::string> dict_;
 

@@ -11,6 +11,7 @@
 #include <Board.h>
 #include <FileReader.h>
 #include <UnixDictionary.h>
+#include <TrieUnixDictionary.h>
 #include <Logger.h>
 #include <Solver.h>
 #include <Opt.h>
@@ -37,7 +38,7 @@ int main(int argc, char **argv) {
 
     int maxWordLength = *(std::max_element(wordLengths.begin(), wordLengths.end()));
     Logger::instance().log("Max word length: ", maxWordLength);
-    DictionaryPtr dictionary(new UnixDictionary(wordLengths));
+    DictionaryPtr dictionary(new TrieUnixDictionary(wordLengths));
     Logger::instance().log("Loaded modules in: ", timer.elapsedNs(), " nanoseconds.");
     Logger::instance().log("Board: \n", *board);
     Logger::instance().log("Word lengths...");

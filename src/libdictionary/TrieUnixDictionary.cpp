@@ -1,14 +1,12 @@
 //
-// Created by peter on 3/29/15.
+// Created by peter on 4/26/15.
 //
 
-#include "UnixDictionary.h"
-#include <fstream>
-#include <sstream>
-#include <Logger.h>
+#include "TrieUnixDictionary.h"
 #include <Timer.h>
+#include <Logger.h>
 
-UnixDictionary::UnixDictionary(std::size_t maxSize) {
+TrieUnixDictionary::TrieUnixDictionary(std::size_t maxSize) : trie_('\0') {
     if (maxSize == 0) {
         auto tfunc = [](const std::string& word) { return false; };
         load(tfunc);
@@ -20,15 +18,22 @@ UnixDictionary::UnixDictionary(std::size_t maxSize) {
     }
 }
 
-UnixDictionary::UnixDictionary(const std::vector<int>& wordLengths) {
+TrieUnixDictionary::TrieUnixDictionary(std::vector<int>& wordLengths) : trie_('\0') {
     auto tfunc = [&wordLengths](const std::string& word) {
         return std::find(wordLengths.begin(), wordLengths.end(), static_cast<int>(word.length())) == wordLengths.end();
     };
     load(tfunc);
 }
 
+TrieUnixDictionary::~TrieUnixDictionary() { }
+
+bool TrieUnixDictionary::check(const std::string& word) const {
+    //return trie_.find(word.c_str()) == trie_.end();
+    return trie_.hasKey(word.c_str());
+}
+
 template <typename T>
-void UnixDictionary::load(T verify) {
+void TrieUnixDictionary::load(T verify) {
     Timer timer;
     timer.start();
 
@@ -48,26 +53,16 @@ void UnixDictionary::load(T verify) {
         } else if (word.find('\'') != std::string::npos) {
             continue;
         } else {
-            dict_.insert(word);
+            trie_.insert(word.c_str(), "");
         }
     }
     in.close();
 
     Logger::instance().log("Loading dictionary took: ", timer.elapsedNs(), " nanoseconds.");
-    Logger::instance().log("Dictionary has: ", dict_.size(), " items.");
+    Logger::instance().log("Dictionary has: ", trie_.size(), " items.");
 }
 
-UnixDictionary::~UnixDictionary() { }
-
-bool UnixDictionary::check(const std::string &word) const {
-    return dict_.find(word) != dict_.end();
-}
-
-bool UnixDictionary::isPrefix(const std::string& word) const {
-    //
-    // with just an unordered_map there isn't a good way to test if the word
-    // is a valid prefix so just always return true.
-    //
-    return true;
+bool TrieUnixDictionary::isPrefix(const std::string &word) const {
+    return trie_.find(word.c_str()) != trie_.end();
 }
 

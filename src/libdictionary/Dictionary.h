@@ -15,6 +15,7 @@ public:
     explicit Dictionary(std::vector<int>& wordLengths) {}
     virtual ~Dictionary() {}
     virtual bool check(const std::string& word) const=0;
+    virtual bool isPrefix(const std::string& word) const=0;
 };
 
 typedef std::unique_ptr<Dictionary> DictionaryPtr;
