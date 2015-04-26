@@ -22,13 +22,11 @@ void Solver::solve() {
     printQueue();
     #endif
 
-    int64_t safetyCounter = 0;
-    int64_t MAX_LOOPS = 5000000000LL;
     std::unordered_set<std::string> finalWordsFound;
 
     // TODO (plesslie); if we make the queue multithreaded safe
     // we can process states in different threads
-    while (!queue_.empty() && safetyCounter < MAX_LOOPS) {
+    while (!queue_.empty()) {
         #ifdef EXTRA_LOGGING
         Logger::instance().log("----- BEGIN ONE ITERATION -----");
         #endif
@@ -70,7 +68,6 @@ void Solver::solve() {
 //                finalWordsFound.push_back(word);
                 finalWordsFound.insert(word);
                 queue_.pop_front();
-                ++safetyCounter;
                 continue;
                 //break;
             }
@@ -149,10 +146,6 @@ void Solver::solve() {
         }
 
         queue_.pop_front();
-        ++safetyCounter;
-        #ifdef EXTRA_LOGGING
-        Logger::instance().log("----- END ITERATION(", safetyCounter, ") -----");
-        #endif
     }
 
     if (queue_.empty()) {
@@ -160,8 +153,6 @@ void Solver::solve() {
         for (auto& it : finalWordsFound) {
             Logger::instance().log(it);
         }
-    } else if (safetyCounter > MAX_LOOPS) {
-        Logger::instance().log("Not enough iterations");
     } else {
         Logger::instance().log("FINISHED");
         Logger::instance().log("words: ");
